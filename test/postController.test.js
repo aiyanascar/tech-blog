@@ -1,7 +1,7 @@
 const request = require('supertest');
 const express = require('express');
 const postController = require('../controllers/postController');
-const { sequelize, Post, User } = require('../models'); 
+const { sequelize, Post, User } = require('../models');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +17,7 @@ describe('Post Controller', () => {
     request(app)
       .post('/post/create')
       .send({ title: 'Test Post', content: 'This is a test post', userId: 1 })
-      .expect(302) 
+      .expect(302) // assuming a redirect on success
       .end(async (err, res) => {
         if (err) return done(err);
         const post = await Post.findOne({ where: { title: 'Test Post' } });
