@@ -1,21 +1,25 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const { Model, DataTypes } = require('sequelize');
 const User = require('./User');
 const Post = require('./Post');
 
-const Comment = sequelize.define('Comment', {
-  content: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-});
+class Comment extends Model {
+  static init(sequelize) {
+    return super.init({
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+    }, { sequelize });
+  }
 
-Comment.belongsTo(User, {
-  foreignKey: 'userId',
-});
-
-Comment.belongsTo(Post, {
-  foreignKey: 'postId',
-});
+  static associate(models) {
+    Comment.belongsTo(models.User, {
+      foreignKey: 'userId',
+    });
+    Comment.belongsTo(models.Post, {
+      foreignKey: 'postId',
+    });
+  }
+}
 
 module.exports = Comment;
