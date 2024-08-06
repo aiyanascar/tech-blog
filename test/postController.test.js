@@ -13,6 +13,10 @@ describe('Post Controller', () => {
     await User.create({ username: 'testuser', password: 'password123' });
   });
 
+  after(async () => {
+    // Closing connection is not needed here
+  });
+
   it('should create a new post', (done) => {
     request(app)
       .post('/post/create')
@@ -32,3 +36,4 @@ describe('Post Controller', () => {
       .expect(200, done);
   });
 });
+

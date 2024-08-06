@@ -1,7 +1,7 @@
 const request = require('supertest');
 const express = require('express');
 const userController = require('../controllers/userController');
-const { sequelize, User } = require('../models'); 
+const { sequelize, User } = require('../models');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -11,6 +11,7 @@ describe('User Controller', () => {
   before(async () => {
     await sequelize.sync({ force: true });
   });
+
 
   it('should sign up a new user', (done) => {
     request(app)
@@ -32,3 +33,4 @@ describe('User Controller', () => {
       .expect(302, done); // assuming a redirect on success
   });
 });
+
