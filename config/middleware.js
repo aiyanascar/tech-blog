@@ -1,6 +1,7 @@
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const sequelize = require('./database');
+require('dotenv').config();
 
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
