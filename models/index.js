@@ -9,9 +9,8 @@ User.init(sequelize);
 Post.init(sequelize);
 Comment.init(sequelize);
 
-Post.belongsTo(User, { foreignKey: 'userId' });
-Comment.belongsTo(User, { foreignKey: 'userId' });
-Comment.belongsTo(Post, { foreignKey: 'postId' });
+Post.associate({ User });
+Comment.associate({ User, Post });
 
 sequelize.sync();
 
