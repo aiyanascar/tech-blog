@@ -1,30 +1,29 @@
 const { Sequelize } = require('sequelize');
-const UserModel = require('/user');
-const PostModel = require('/post');
-const CommentModel = require('/comment');
+const UserModel = require('./User');
+const PostModel = require('./Post');
+const CommentModel = require('./Comment');
 
 // Initialize Sequelize
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres', // or your dialect
-    logging: false,      // Disable logging, or you can enable it for debugging
+  dialect: 'postgres',
+  schema: 'tech_blog_schema', // Ensure the correct schema is used
+  logging: false,
 });
 
 // Initialize models
-const User = UserModel(sequelize, Sequelize);
-const Post = PostModel(sequelize, Sequelize);
-const Comment = CommentModel(sequelize, Sequelize);
+UserModel.init(sequelize);
+PostModel.init(sequelize);
+CommentModel.init(sequelize);
 
-// Define associations if any
-User.hasMany(Post);
-Post.belongsTo(User);
-
-Post.hasMany(Comment);
-Comment.belongsTo(Post);
+// Define associations
+UserModel.associate(sequelize.models);
+PostModel.associate(sequelize.models);
+CommentModel.associate(sequelize.models);
 
 // Export the Sequelize instance and the models
 module.exports = {
-    sequelize, // The single Sequelize instance
-    User,
-    Post,
-    Comment
+  sequelize, // The single Sequelize instance
+  User: sequelize.models.User,
+  Post: sequelize.models.Post,
+  Comment: sequelize.models.Comment,
 };

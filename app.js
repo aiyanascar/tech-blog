@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
@@ -9,6 +10,7 @@ const User = require('./models/User');
 const Post = require('./models/Post'); 
 const Comment = require('./models/Comment'); 
 
+
 const app = express();
 
 app.engine('handlebars', exphbs());
@@ -19,12 +21,25 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const sessionStore = new SequelizeStore({ 
+    db: sequelize,
+    tableName: 'Sessions',
+    schema: 'tech_blog_schema' // Set schema explicitly
+});
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
-    store: new SequelizeStore({ db: sequelize }),
+    store: sessionStore,
     resave: false,
     saveUninitialized: false,
 }));
+
+// Sync with schema
+sequelize.sync({ schema: 'tech_blog_schema' }).then(() => {
+    app.listen(3000, () => {
+        console.log('Server is running on port 3000');
+    });
+}).catch(err => console.error('Failed to sync database:', err));
 
 // Route handler for the home page
 app.get('/', async (req, res) => {
