@@ -1,19 +1,26 @@
 const express = require('express');
 const session = require('express-session');
+const path = require('path');
 const bcrypt = require('bcrypt');
 const sequelize = require('./config/database');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const exphbs = require('express-handlebars');
 const User = require('./models/User'); 
 const Post = require('./models/Post'); 
 const Comment = require('./models/Comment'); 
 
 const app = express();
 
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-    secret: 'your-secret-key',
+    secret: process.env.SESSION_SECRET,
     store: new SequelizeStore({ db: sequelize }),
     resave: false,
     saveUninitialized: false,
@@ -149,6 +156,8 @@ app.get('/logout', (req, res) => {
 });
 
 // Start the server
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
+sequelize.sync().then(() => {
+    app.listen(3000, () => {
+        console.log('Server is running on port 3000');
+    });
+}).catch(err => console.error('Failed to sync database:', err));
