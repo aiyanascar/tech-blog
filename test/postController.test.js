@@ -1,7 +1,7 @@
 const request = require('supertest');
 const express = require('express');
 const postController = require('../controllers/postController');
-const { sequelize, Post, User } = require('../models');
+const { User, Post } = require('../models');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -9,12 +9,7 @@ app.use('/post', postController);
 
 describe('Post Controller', () => {
   before(async () => {
-    await sequelize.sync({ force: true });
     await User.create({ username: 'testuser', password: 'password123' });
-  });
-
-  after(async () => {
-    // Closing connection is not needed here
   });
 
   it('should create a new post', (done) => {

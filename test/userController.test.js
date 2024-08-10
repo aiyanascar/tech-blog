@@ -1,18 +1,13 @@
 const request = require('supertest');
 const express = require('express');
 const userController = require('../controllers/userController');
-const { sequelize, User } = require('../models');
+const { User } = require('../models');
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use('/user', userController);
 
 describe('User Controller', () => {
-  before(async () => {
-    await sequelize.sync({ force: true });
-  });
-
-
   it('should sign up a new user', (done) => {
     request(app)
       .post('/user/signup')
