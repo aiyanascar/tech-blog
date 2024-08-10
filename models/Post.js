@@ -1,5 +1,4 @@
 const { Model, DataTypes } = require('sequelize');
-const User = require('./User');
 
 class Post extends Model {
   static init(sequelize) {
@@ -12,13 +11,16 @@ class Post extends Model {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-    }, { sequelize });
+    }, {
+      sequelize,
+      schema: 'tech_blog_schema',
+      modelName: 'Post',
+    });
   }
 
   static associate(models) {
-    Post.belongsTo(models.User, {
-      foreignKey: 'userId',
-    });
+    Post.belongsTo(models.User, { foreignKey: 'userId' });
+    Post.hasMany(models.Comment, { foreignKey: 'postId' });
   }
 }
 

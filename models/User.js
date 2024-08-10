@@ -6,13 +6,21 @@ class User extends Model {
       username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       password: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-    }, { sequelize });
+    }, {
+      sequelize,
+      schema: 'tech_blog_schema', 
+      modelName: 'User',
+    });
+  }
+
+  static associate(models) {
+    User.hasMany(models.Post, { foreignKey: 'userId' });
+    User.hasMany(models.Comment, { foreignKey: 'userId' });
   }
 }
 
