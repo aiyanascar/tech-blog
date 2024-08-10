@@ -1,27 +1,19 @@
 const express = require('express');
-const exphbs = require('express-handlebars');
-const path = require('path');
-const sequelize = require('./config/database');
-const sessionMiddleware = require('./config/middleware');
-const homeController = require('./controllers/homeController');
-const userController = require('./controllers/userController');
-const postController = require('./controllers/postController');
-
 const app = express();
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const sequelize = require('./config/database');
+const commentController = require('./controllers/commentController');
 
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
-
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(sessionMiddleware);
 
-app.use('/', homeController);
-app.use('/user', userController);
-app.use('/post', postController);
+// Use the comment controller
+app.use('/comments', commentController);
 
-sequelize.sync({ force: false }).then(() => {
-  app.listen(process.env.PORT || 3000, () => {
-    console.log('Server is running...');
-  });
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;
