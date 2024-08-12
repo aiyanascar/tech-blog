@@ -1,0 +1,24 @@
+{
+    "development": {
+      "username": "aiyanascar",
+      "password": "cherrybox14",
+      "database": "tech_blog",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
+    },
+    "test": {
+      "username": "aiyanascar",
+      "password": "cherrybox14",
+      "database": "tech_blog_test",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
+    },
+    "production": {
+      "username": "aiyanascar",
+      "password": "cherrybox14",
+      "database": "tech_blog_prod",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
+    }
+  }
+  
