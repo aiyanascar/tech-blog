@@ -1,24 +1,21 @@
-// index.js
-const UserModel = require('./User');
-const PostModel = require('./Post');
-const CommentModel = require('./Comment');
-
 const sequelize = require('../config/database');
 
-// Initialize models
-UserModel.init(sequelize);
-PostModel.init(sequelize);
-CommentModel.init(sequelize);
+const User = require('./User');
+const Post = require('./Post');
+const Comment = require('./Comment');
+
+const models = {
+  User: User.init(sequelize),
+  Post: Post.init(sequelize),
+  Comment: Comment.init(sequelize),
+};
 
 // Define associations
-UserModel.associate(sequelize.models);
-PostModel.associate(sequelize.models);
-CommentModel.associate(sequelize.models);
+User.associate(models);
+Post.associate(models);
+Comment.associate(models);
 
-// Export models
 module.exports = {
   sequelize,
-  User: sequelize.models.User,
-  Post: sequelize.models.Post,
-  Comment: sequelize.models.Comment
+  ...models,
 };

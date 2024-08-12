@@ -1,10 +1,8 @@
-// models/Post.js
-const { Model, DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const User = require('./User');
 
-class Post extends Model {}
-
-Post.init({
+const Post = sequelize.define('Post', {
   title: {
     type: DataTypes.STRING,
     allowNull: false
@@ -16,14 +14,10 @@ Post.init({
   userId: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'Users', // The name of the table to which it refers
+      model: User,
       key: 'id'
     }
   }
-}, {
-  sequelize,
-  modelName: 'Post',
-  schema: 'tech_blog_schema' // Ensure this matches your schema
 });
 
 module.exports = Post;

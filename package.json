@@ -4,7 +4,8 @@
     "description": "A CMS-style blog site for developers to publish their blog posts and comment on other developers' posts.",
     "main": "app.js",
     "scripts": {
-        "start": "node app.js"
+        "start": "node app.js",
+        "seed": "node seed.js"
     },
     "dependencies": {
         "bcrypt": "^5.0.1",
