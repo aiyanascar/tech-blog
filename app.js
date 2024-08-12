@@ -10,7 +10,6 @@ const User = require('./models/User');
 const Post = require('./models/Post'); 
 const Comment = require('./models/Comment'); 
 
-
 const app = express();
 
 app.engine('handlebars', exphbs());
@@ -34,12 +33,15 @@ app.use(session({
     saveUninitialized: false,
 }));
 
-// Sync with schema
-sequelize.sync({ schema: 'tech_blog_schema' }).then(() => {
+// Synchronize models with the database
+sequelize.sync({ alter: true }) // Use { force: true } for a fresh start
+  .then(() => {
+    console.log('Database & tables created!');
     app.listen(3000, () => {
         console.log('Server is running on port 3000');
     });
-}).catch(err => console.error('Failed to sync database:', err));
+  })
+  .catch(err => console.error('Failed to sync database:', err));
 
 // Route handler for the home page
 app.get('/', async (req, res) => {
@@ -169,10 +171,3 @@ app.get('/logout', (req, res) => {
         res.redirect('/');
     });
 });
-
-// Start the server
-sequelize.sync().then(() => {
-    app.listen(3000, () => {
-        console.log('Server is running on port 3000');
-    });
-}).catch(err => console.error('Failed to sync database:', err));

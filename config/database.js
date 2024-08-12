@@ -1,11 +1,8 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
-    dialect: 'postgres',
-    schema: 'tech_blog_schema', // specify the schema here
-    define: {
-        schema: 'tech_blog_schema', // another way to ensure all models use this schema
-    },
+const sequelize = new Sequelize('tech_blog', 'user1', 'golden', {
+  host: 'localhost', // Adjust if needed
+  dialect: 'postgres',
+  schema: 'tech_blog_schema', // This is for schema specification
 });
 
 module.exports = sequelize;
