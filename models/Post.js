@@ -1,27 +1,29 @@
+// models/Post.js
 const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-class Post extends Model {
-  static init(sequelize) {
-    return super.init({
-      title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      content: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-      },
-    }, {
-      sequelize,
-      schema: 'tech_blog_schema',
-      modelName: 'Post',
-    });
-  }
+class Post extends Model {}
 
-  static associate(models) {
-    Post.belongsTo(models.User, { foreignKey: 'userId' });
-    Post.hasMany(models.Comment, { foreignKey: 'postId' });
+Post.init({
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  content: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Users', // The name of the table to which it refers
+      key: 'id'
+    }
   }
-}
+}, {
+  sequelize,
+  modelName: 'Post',
+  schema: 'tech_blog_schema' // Ensure this matches your schema
+});
 
 module.exports = Post;

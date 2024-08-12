@@ -1,14 +1,9 @@
-const { Sequelize } = require('sequelize');
+// index.js
 const UserModel = require('./User');
 const PostModel = require('./Post');
 const CommentModel = require('./Comment');
 
-// Initialize Sequelize
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
-  schema: 'tech_blog_schema', // Ensure the correct schema is used
-  logging: false,
-});
+const sequelize = require('../config/database');
 
 // Initialize models
 UserModel.init(sequelize);
@@ -20,10 +15,10 @@ UserModel.associate(sequelize.models);
 PostModel.associate(sequelize.models);
 CommentModel.associate(sequelize.models);
 
-// Export the Sequelize instance and the models
+// Export models
 module.exports = {
-  sequelize, // The single Sequelize instance
+  sequelize,
   User: sequelize.models.User,
   Post: sequelize.models.Post,
-  Comment: sequelize.models.Comment,
+  Comment: sequelize.models.Comment
 };
